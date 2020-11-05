@@ -1,5 +1,8 @@
 const express = require('express');
 const router = express.Router();
+const Todos = require('../models/todo');
+const mongoose = require('mongoose');
+const Todos = require('../models/todo');
 
 let arr = ["Do home Work", "Play Cricket"];
 
@@ -7,7 +10,14 @@ let arr = ["Do home Work", "Play Cricket"];
 curl http://localhost:3000/todos
 */
 router.get("/todos", (req,res) => {
-    res.send(arr);
+    Todos.find({}, (err,allTodos) => {
+        if(err){
+            console.log(err);
+        }
+        else{
+            res.send(allPosts);
+        }
+    });
 });
 
 
@@ -16,9 +26,13 @@ curl -X POST -d 'name=redhat' http://localhost:3000/todos
 */
 router.post("/todos", (req,res) => {
     let newTodo = req.body.name;
-    arr.push(newTodo);
-    console.log("new : " +newTodo);
-    res.send(arr);
+    Todos.create(newTodo, (err,newlyCreated)=> {
+        if (err) {
+            console.log(err);
+        } else {
+            res.send(newlyCreated);
+        }
+    });
 });
 
 /* Delete a TODO to the list
