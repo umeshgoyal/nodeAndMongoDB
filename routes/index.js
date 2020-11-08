@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const Todos = require('../models/todo');
 const mongoose = require('mongoose');
-const Todos = require('../models/todo');
 
 let arr = ["Do home Work", "Play Cricket"];
 
@@ -15,17 +14,20 @@ router.get("/todos", (req,res) => {
             console.log(err);
         }
         else{
-            res.send(allPosts);
+            console.log(allTodos);
+            res.send(allTodos);
         }
     });
 });
 
 
 /* Add a TODO to the list
-curl -X POST -d 'name=redhat' http://localhost:3000/todos
+curl -X POST -d 'name=Play Cricket' http://localhost:3000/todos
 */
 router.post("/todos", (req,res) => {
-    let newTodo = req.body.name;
+    let newTodo = {
+        name: req.body.name
+    }
     Todos.create(newTodo, (err,newlyCreated)=> {
         if (err) {
             console.log(err);
@@ -40,13 +42,17 @@ curl -X "DELETE" -d 'name=Play Cricket' http://localhost:3000/todos
 */
 router.delete("/todos", (req,res) => {
     let deleteTodo = req.body.name;
-    console.log(deleteTodo);
-    for( let i = 0; i < arr.length; i++){
-         if ( arr[i] === deleteTodo) {
-             arr.splice(i,1);
-         }
-    }
-    res.send(arr);
+    Todos.deleteOne({name:deleteTodo}, (err,result)=>{
+        if(err){
+            console.log(err);
+        }
+        else{
+            //console.log(result);
+            res.json(result);
+        }
+    });
 });
 
 module.exports = router;
+
+
