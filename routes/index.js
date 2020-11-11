@@ -3,7 +3,6 @@ const router = express.Router();
 const Todos = require('../models/todo');
 const mongoose = require('mongoose');
 
-let arr = ["Do home Work", "Play Cricket"];
 
 /* Get all TODOS:   
 curl http://localhost:3000/todos
@@ -23,6 +22,8 @@ router.get("/todos", (req,res) => {
 
 /* Add a TODO to the list
 curl -X POST -d 'name=Play Cricket' http://localhost:3000/todos
+curl -X POST -d 'name=HomeWork' http://localhost:3000/todos
+
 */
 router.post("/todos", (req,res) => {
     let newTodo = {
