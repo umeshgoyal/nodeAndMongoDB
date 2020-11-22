@@ -18,7 +18,7 @@ class App extends Component {
 
 
   handleSubmit = (event) => {
-      event.preventDefault();
+    //  event.preventDefault();
       const data = this.state;
       // console.log(this.inputFullNameRef.current.value)
 
@@ -28,7 +28,7 @@ class App extends Component {
         endDate:this.state.endDate
       }
       console.log(todo);
-      axios.post(`http://localhost:3001/todos`, { todo })
+      axios.post(`http://localhost:3001/todos`,  todo )
       .then(res => {
         console.log(res);
         console.log(res.data);

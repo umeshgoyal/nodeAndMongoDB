@@ -96,6 +96,7 @@ curl -X POST -d 'name=Task-4 &startDate=2020-11-11&endDate=2020-11-21' http://lo
 
 */
 router.post("/todos", (req,res) => {
+   // console.log(req);
     let newTodo = {
         name: req.body.name,
         startDate:req.body.startDate,
@@ -108,7 +109,7 @@ router.post("/todos", (req,res) => {
         if (err) {
             console.log(err);
         } else {
-            console.log(newlyCreated);
+            //console.log(newlyCreated);
             res.send(newlyCreated);
         }
     });
