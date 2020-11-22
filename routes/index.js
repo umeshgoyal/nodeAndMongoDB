@@ -127,4 +127,27 @@ router.delete("/todos", (req,res) => {
         }
     });
 });
+
+/* Update an existing TODO
+curl -X PUT -d 'name=Task-1 &startDate=2020-11-03&endDate=2020-11-20&dateCreated=2020-11-01&pending=false' http://localhost:3000/todos
+
+*/
+router.put("/todos", (req,res) => {
+
+    var condition = { name: req.body.name };
+    Todos.findOne(condition, function (err, doc){
+        if(err) {
+            console.log(err);
+        } else {
+            doc.name =  req.body.name;
+            doc.startDate = req.body.startDate;
+            doc.endDate = req.body.endDate;
+            doc.dateCreated = req.body.dateCreated;
+            doc.pending = req.body.pending;
+            doc.save();
+            res.send('Updated');
+        }
+      });
+});
+
 module.exports = router;
