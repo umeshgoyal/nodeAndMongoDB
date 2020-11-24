@@ -7,7 +7,6 @@ import SubmitForm from './components/SubmitForm';
 import TodoList from './components/TodoList';
 import Todo from './components/Todo';
 import Header from './components/Header';
-// import todo from '../../Backend/models/todo';
 class App extends React.Component {
   state = {
     tasks: [{name:'task 1',startDate:'2020-10-30',endDate:'2020-10-30'}]
@@ -45,27 +44,15 @@ class App extends React.Component {
     let todoData = [];
     axios.get(`http://localhost:3001/todos`)
     .then(res => {
-      // console.log(res.data);
-       
       for( let i =0 ;i< res.data.length;i++) {
         todoData.push(res.data[i]);
-        // console.log(res.data[i].name);
       }
-      
-      // console.log(res);
-      // for( let i =0 ;i< todoData.length;i++) {
-      //   console.log(todoData[i].name);
-      // }
-     
     })
     .then( ()=>{
       for( let i =0 ;i< todoData.length;i++) {
       this.setState({tasks: [...this.state.tasks, todoData[i]]});
       }
-    // console.log(this.state.tasks);
     });
-    // console.log("Heieieieie",todoData);
-    // this.setState({tasks: [...this.state.tasks, todoData]});
   }
   
   componentDidMount() {
