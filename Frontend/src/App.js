@@ -45,27 +45,27 @@ class App extends React.Component {
     let todoData = [];
     axios.get(`http://localhost:3001/todos`)
     .then(res => {
-      // console.log(res);
+      // console.log(res.data);
        
       for( let i =0 ;i< res.data.length;i++) {
         todoData.push(res.data[i]);
+        // console.log(res.data[i].name);
       }
-      this.setState({tasks: [...this.state.tasks, res.data]});
+      
       // console.log(res);
-      for( let i =0 ;i< todoData.length;i++) {
-        console.log(todoData[i].name);
-      }
+      // for( let i =0 ;i< todoData.length;i++) {
+      //   console.log(todoData[i].name);
+      // }
      
+    })
+    .then( ()=>{
+      for( let i =0 ;i< todoData.length;i++) {
+      this.setState({tasks: [...this.state.tasks, todoData[i]]});
+      }
+    // console.log(this.state.tasks);
     });
-    console.log("Heieieieie",todoData);
-
-    for( let i =0 ;i< todoData.length;i++) {
-      console.log(todoData[i].name);
-    }
-    this.setState({tasks: [...this.state.tasks, todoData]});
-    console.log(this.state.tasks);
-    
-
+    // console.log("Heieieieie",todoData);
+    // this.setState({tasks: [...this.state.tasks, todoData]});
   }
   
   componentDidMount() {
@@ -77,7 +77,6 @@ class App extends React.Component {
 
       <div className='wrapper'>
         <div className='card frame'>
-        {/* <td><button onClick={this.getInitialData}>Get All TODOs</button></td> */}
           <Header numTodos={this.state.tasks.length} />
           <TodoList tasks={this.state.tasks} onDelete={this.handleDelete} />
           <SubmitForm onFormSubmit={this.handleSubmit} />
