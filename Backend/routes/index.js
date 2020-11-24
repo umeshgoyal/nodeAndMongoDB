@@ -116,7 +116,7 @@ router.post("/todos", (req,res) => {
 });
 
 /* Delete a TODO to the list
-curl -X "DELETE" -d 'name=Codenation Interview ' http://localhost:3000/todos
+curl -X "DELETE" -d 'name= ' http://localhost:3001/todos
 */
 router.delete("/todos", (req,res) => {
     let deleteTodo = req.body.name;
