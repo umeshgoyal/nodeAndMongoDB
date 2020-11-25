@@ -119,13 +119,15 @@ router.post("/todos", (req,res) => {
 curl -X "DELETE" -d 'name= ' http://localhost:3001/todos
 */
 router.delete("/todos", (req,res) => {
-    let deleteTodo = req.body.name;
-    Todos.deleteOne({name:deleteTodo}, (err,result)=>{
+    console.log(req.body);
+    let deleteTodo = req.body._id;
+    console.log("deleteTodo", deleteTodo);
+    Todos.deleteOne({_id:deleteTodo}, (err,result)=>{
         if(err){
             console.log(err);
         }
         else{
-            //console.log(result);
+            console.log("Backend",result);
             res.json(result);
         }
     });

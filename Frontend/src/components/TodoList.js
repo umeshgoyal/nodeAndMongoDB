@@ -11,11 +11,7 @@ import axios from 'axios';
     todoData.push(res.data);
     // console.log(res.data);
   });
-// console.log(todoData[0].name);
-// console.log(props);
-// props.tasks
-let newarray = [...props.tasks,todoData[0]];
-// props.setState({tasks: [...props.tasks, todoData]});
+
     const todos = props.tasks.map((todo, index) => {
       return <Todo content={todo} key={index} id={index} onDelete={props.onDelete} />
     })

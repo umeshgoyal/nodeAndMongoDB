@@ -17,25 +17,20 @@ class App extends React.Component {
     
      axios.post(`http://localhost:3001/todos`,  task )
       .then(res => {
-        console.log(res);
         console.log(res.task);
       });
       console.log("Final data is", task)
   }
-  getInitialData(){
-    var todoData = [];
-    axios.get(`http://localhost:3001/todos`)
-    .then(res => {
-      console.log(res);
-      todoData.push(res.data);
-      console.log(res.data);
-    });
-    this.setState({tasks: todoData});
-     
-  }
   
   handleDelete = (index) => {
     const newArr = [...this.state.tasks];
+    // console.log(newArr[index],index);
+    let task = newArr[index];
+    console.log(task);
+    axios.delete(`http://localhost:3001/todos`,  { data: task })
+    .then(res => {
+      console.log("In Frontend",res.data);
+    });
     newArr.splice(index, 1);
     this.setState({tasks: newArr});
   }
@@ -59,9 +54,7 @@ class App extends React.Component {
      this.performAPICall();
   }
   render() {
-    // this.getInitialData();
     return(
-
       <div className='wrapper'>
         <div className='card frame'>
           <Header numTodos={this.state.tasks.length} />
