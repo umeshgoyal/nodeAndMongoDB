@@ -65,18 +65,20 @@ router.get("/todos/endDate", (req,res) => {
 
 
 
-/* Get all Todos : Next x days (EG: 15 days)
-curl -X "GET" http://localhost:3001/todos/startDate
+/* Get all Todos : Between startDate and endDate
+curl -X "GET" -d 'name=Task-4 &startDate=2020-11-04&endDate=2020-11-21' http://localhost:3001/todos/search
 */
 
-router.get("/todos/startDate",(req,res)=>{
-    var nextday= new Date();
-    nextday.setTime(nextday.getTime() + (15*24*60*60*1000));
-    var today= new Date();
-    today.setTime(today.getTime() );
+router.get("/todos/search",(req,res)=>{
+    console.log(req.body,req.body.startDate);
+
+    var nextday= new Date(req.body.endDate);
+    nextday.setTime(nextday.getTime());
+    var prevday=  new Date(req.body.startDate);
+    prevday.setTime(prevday.getTime() );
     Todos.find({
         startDate:{
-            $lte:nextday, $gte:today
+            $lte:nextday, $gte:prevday
         }
     },
     (err,allTodos) => {
