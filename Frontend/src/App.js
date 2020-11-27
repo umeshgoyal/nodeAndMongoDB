@@ -66,19 +66,16 @@ class App extends React.Component {
     return(
       <div className='wrapper'>
         <div className='card frame'>
-        <BrowserRouter>  
-            <Switch>  
+            <Switch>
               <Route path="/search">
                 <SearchForm />
               </Route>
 
-              <Route path="/">
+              <Route path="/" exact>
                  <Home />
               </Route>
 
             </Switch>
-        </BrowserRouter>
-
         </div>
       </div>
     );

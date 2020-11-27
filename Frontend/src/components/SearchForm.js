@@ -75,13 +75,11 @@ class SearchForm extends Component{
         const { endDate} = this.state;
         return(
           <div className="home-container container"> 
-           <BrowserRouter>
             <Link to="/">
                 <Button className="btn-block" type="primary"  >
                     Back
                 </Button>
             </Link> 
-          </BrowserRouter>
           <form onSubmit={this.handleSubmit}>
              <input 
              type='date'

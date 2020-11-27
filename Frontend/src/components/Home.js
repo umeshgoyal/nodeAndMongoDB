@@ -63,19 +63,14 @@ class Home extends React.Component {
     return(
       <div className='wrapper'>
         <div className='card frame'>
-        <BrowserRouter>  
              <Link to="/search">
                 <Button className="btn-block" type="primary" block={true}>
                     Search
                 </Button>
             </Link>
-
-          
              <Header numTodos={this.state.tasks.length} />
              <TodoList tasks={this.state.tasks} onDelete={this.handleDelete}  />
              <SubmitForm onFormSubmit={this.handleSubmit} />
-          
-          </BrowserRouter>
         </div>
       </div>
     );
