@@ -20,7 +20,7 @@ class Home extends React.Component {
     
      axios.post(`http://localhost:3001/todos`,  task )
       .then(res => {
-        console.log(res.task);
+        console.log(res);
       });
       console.log("Final data is", task)
   }

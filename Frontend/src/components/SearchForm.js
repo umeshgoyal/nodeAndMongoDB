@@ -20,20 +20,17 @@ class SearchForm extends Component{
         if(this.state.startDate === '' || this.state.endDate==='') return;
         
         let todoData = [];
-        axios.get(`http://localhost:3001/todos/search`)
+        let task = this.state;
+        axios.post(`http://localhost:3001/todos/search`,task)
         .then(res => {
           for( let i =0 ;i< res.data.length;i++) {
             todoData.push(res.data[i]);
           }
         })
         .then( ()=>{
+          this.setState({tasks:[]});
           for( let i =0 ;i< todoData.length;i++) {
           this.setState({tasks: [...this.state.tasks, todoData[i]]});
-          }
-          console.log('Im here',todoData.length);
-          if(todoData.length ==0){
-            console.log("yes size 0 ")
-            this.setState({tasks:[]})
           }
         });
         console.log(todoData);

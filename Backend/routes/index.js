@@ -69,7 +69,7 @@ router.get("/todos/endDate", (req,res) => {
 curl -X "GET" -d 'name=Task-4 &startDate=2020-11-04&endDate=2020-11-21' http://localhost:3001/todos/search
 */
 
-router.get("/todos/search",(req,res)=>{
+router.post("/todos/search",(req,res)=>{
     console.log(req.body,req.body.startDate);
 
     var nextday= new Date(req.body.endDate);
