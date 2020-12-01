@@ -9,10 +9,11 @@ import SubmitForm from './SubmitForm';
 import SearchForm from './SearchForm';
 import TodoList from './TodoList';
 import Todo from './Todo';
+import TodoApp from './Todo';
 import Header from './Header';
 class Home extends React.Component {
   state = {
-    tasks: [{name:'task 1',startDate:'2020-10-30',endDate:'2020-10-30'}]
+    tasks: []
   };
 
   handleSubmit = task => {
@@ -28,18 +29,45 @@ class Home extends React.Component {
   handleDelete = (index) => {
     const newArr = [...this.state.tasks];
     // console.log(newArr[index],index);
-    let task = newArr[index];
+    let pos = -1;
+    for( let i =0 ; i< newArr.length;i++ ){
+      if( newArr[i].id === index){
+        pos = i;
+        break;
+      }
+    }
+    if( pos == -1) return;
+    let task = newArr[pos];
     console.log(task);
     axios.delete(`http://localhost:3001/todos`,  { data: task })
     .then(res => {
       console.log("In Frontend",res.data);
     });
-    newArr.splice(index, 1);
+    newArr.splice(pos, 1);
     this.setState({tasks: newArr});
   }
-  // handleUpdate = (index) => {
+  handleUpdate = (task) => {
+    const newArr = [...this.state.tasks];
 
-  // }
+    let pos = -1;
+    for( let i =0 ; i< newArr.length; i++ ){
+      if( newArr[i].id === task.id){
+        pos = i;
+        break;
+      }
+    }
+    if( pos == -1) return;
+    newArr[pos].name = task.name;
+    newArr[pos].startDate = task.startDate;
+    newArr[pos].endDate= task.endDate;
+    let updateTask = newArr[pos];
+    console.log(updateTask);
+    axios.put(`http://localhost:3001/todos`,  { data: updateTask })
+    .then(res => {
+      console.log("Updating In Frontend",res.data);
+    });
+    this.setState({tasks: newArr});
+  }
   performAPICall =  () => {
     
     let todoData = [];
@@ -69,7 +97,8 @@ class Home extends React.Component {
                 </Button>
             </Link>
              <Header numTodos={this.state.tasks.length} />
-             <TodoList tasks={this.state.tasks} onDelete={this.handleDelete}  />
+             <TodoList tasks={this.state.tasks} onDelete={this.handleDelete} 
+             onUpdate={this.handleUpdate} />
              <SubmitForm onFormSubmit={this.handleSubmit} />
         </div>
       </div>

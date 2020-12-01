@@ -3,7 +3,8 @@ import ReactDOM from 'react-dom';
 import App from '../App';
 import Todo from './Todo';
 import axios from 'axios';
- const TodoList = (props) => {
+ class TodoList extends Component {
+   render(){
   var todoData = [];
   axios.get(`http://localhost:3001/todos`)
   .then(res => {
@@ -12,13 +13,14 @@ import axios from 'axios';
     // console.log(res.data);
   });
 
-    const todos = props.tasks.map((todo, index) => {
-      return <Todo content={todo} key={index} id={index} onDelete={props.onDelete} />
+    const todos = this.props.tasks.map((todo, index) => {
+      return <Todo content={todo} key={todo.id} id={todo.id}  onUpdate={this.props.onUpdate} onDelete={this.props.onDelete} />
     })
     return( 
       <div className='list-wrapper'>
         {todos} 
       </div>
     );
+  }
   }
   export default TodoList;

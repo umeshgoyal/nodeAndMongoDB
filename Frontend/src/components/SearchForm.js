@@ -39,6 +39,18 @@ class SearchForm extends Component{
           startDate: '',
           endDate: ''});
       }
+      handleDelete = (index) => {
+        const newArr = [...this.state.tasks];
+        // console.log(newArr[index],index);
+        let task = newArr[index];
+        console.log(task);
+        axios.delete(`http://localhost:3001/todos`,  { data: task })
+        .then(res => {
+          console.log("In Frontend",res.data);
+        });
+        newArr.splice(index, 1);
+        this.setState({tasks: newArr});
+      }
       handleInputChange = (event) => {
         event.preventDefault()
         this.setState({
