@@ -99,7 +99,10 @@ curl -X POST -d 'name=Task-4 &startDate=2020-11-11&endDate=2020-11-21' http://lo
 */
 router.post("/todos", (req,res) => {
    // console.log(req);
+   	var d = new Date();
+	var n = d.valueOf();
     let newTodo = {
+    	id:n,
         name: req.body.name,
         startDate:req.body.startDate,
         endDate:req.body.endDate,
@@ -141,17 +144,18 @@ curl -X PUT -d 'name=Task-1 &startDate=2020-11-03&endDate=2020-11-20&dateCreated
 
 */
 router.put("/todos", (req,res) => {
+	console.log(req.body.data);
 
-    var condition = { name: req.body.name };
+    var condition = { id: req.body.data.id};
     Todos.findOne(condition, function (err, doc){
         if(err) {
             console.log(err);
         } else {
-            doc.name =  req.body.name;
-            doc.startDate = req.body.startDate;
-            doc.endDate = req.body.endDate;
-            doc.dateCreated = req.body.dateCreated;
-            doc.pending = req.body.pending;
+            doc.name =  req.body.data.name;
+            doc.startDate = req.body.data.startDate;
+            doc.endDate = req.body.data.endDate;
+            // doc.dateCreated = req.body.dateCreated;
+            // doc.pending = req.body.pending;
             doc.save();
             res.send('Updated');
         }
