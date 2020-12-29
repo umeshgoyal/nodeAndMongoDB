@@ -1,15 +1,15 @@
-import React, {Component} from 'react';
-import ReactDOM from 'react-dom';
+import React from 'react';
+// import ReactDOM from 'react-dom';
 import { Button } from 'antd';
 
-import {Link, BrowserRouter, Route, Switch,withRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import "react-datepicker/dist/react-datepicker.css";
 import axios from 'axios';
 import SubmitForm from './SubmitForm';
-import SearchForm from './SearchForm';
+// import SearchForm from './SearchForm';
 import TodoList from './TodoList';
-import Todo from './Todo';
-import TodoApp from './Todo';
+// import Todo from './Todo';
+// import TodoApp from './Todo';
 import Header from './Header';
 class Home extends React.Component {
   state = {
@@ -17,93 +17,97 @@ class Home extends React.Component {
   };
 
   handleSubmit = task => {
-    this.setState({tasks: [...this.state.tasks, task]});
-    
-     axios.post(`http://localhost:3001/todos`,  task )
+
+    axios.post(`http://localhost:3001/todos`, task)
       .then(res => {
-        console.log(res);
+        console.log("Recieved data ", res.data);
+        this.setState({ tasks: [...this.state.tasks, res.data] });
       });
-      console.log("Final data is", task)
+
   }
-  
+
   handleDelete = (index) => {
     const newArr = [...this.state.tasks];
-    // console.log(newArr[index],index);
     let pos = -1;
-    for( let i =0 ; i< newArr.length;i++ ){
-      if( newArr[i].id === index){
+    for (let i = 0; i < newArr.length; i++) {
+      if (newArr[i].id === index) {
         pos = i;
         break;
       }
     }
-    if( pos == -1) return;
+    if (pos === -1) return;
     let task = newArr[pos];
     console.log(task);
-    axios.delete(`http://localhost:3001/todos`,  { data: task })
-    .then(res => {
-      console.log("In Frontend",res.data);
-    });
+    axios.delete(`http://localhost:3001/todos`, { data: task })
+      .then(res => {
+        console.log("In Frontend", res.data);
+      });
     newArr.splice(pos, 1);
-    this.setState({tasks: newArr});
+    this.setState({ tasks: newArr });
   }
+
   handleUpdate = (task) => {
     const newArr = [...this.state.tasks];
 
     let pos = -1;
-    for( let i =0 ; i< newArr.length; i++ ){
-      if( newArr[i].id === task.id){
+    for (let i = 0; i < newArr.length; i++) {
+      if (newArr[i].id === task.id) {
         pos = i;
         break;
       }
     }
-    if( pos == -1) return;
+
+    if (pos === -1) return;
     newArr[pos].name = task.name;
     newArr[pos].startDate = task.startDate;
-    newArr[pos].endDate= task.endDate;
+    newArr[pos].endDate = task.endDate;
     let updateTask = newArr[pos];
     console.log(updateTask);
-    axios.put(`http://localhost:3001/todos`,  { data: updateTask })
-    .then(res => {
-      console.log("Updating In Frontend",res.data);
-    });
-    this.setState({tasks: newArr});
+
+    axios.put(`http://localhost:3001/todos`, { data: updateTask })
+      .then(res => {
+        console.log("Updating In Frontend", res.data);
+      });
+    this.setState({ tasks: newArr });
   }
-  performAPICall =  () => {
-    
+
+  performAPICall = () => {
+
     let todoData = [];
     axios.get(`http://localhost:3001/todos`)
-    .then(res => {
-      for( let i =0 ;i< res.data.length;i++) {
-        todoData.push(res.data[i]);
-      }
-    })
-    .then( ()=>{
-      for( let i =0 ;i< todoData.length;i++) {
-      this.setState({tasks: [...this.state.tasks, todoData[i]]});
-      }
-    });
+      .then(res => {
+        for (let i = 0; i < res.data.length; i++) {
+          todoData.push(res.data[i]);
+        }
+      })
+      .then(() => {
+        for (let i = 0; i < todoData.length; i++) {
+          this.setState({ tasks: [...this.state.tasks, todoData[i]] });
+        }
+      });
   }
-  
+
   componentDidMount() {
-     this.performAPICall();
+    this.performAPICall();
   }
+
   render() {
-    return(
+    return (
       <div className='wrapper'>
         <div className='card frame'>
-             <Link to="/search">
-                <Button className="btn-block" type="primary" block={true}>
-                    Search
-                </Button>
-            </Link>
-             <Header numTodos={this.state.tasks.length} />
-             <TodoList tasks={this.state.tasks} onDelete={this.handleDelete} 
-             onUpdate={this.handleUpdate} />
-             <SubmitForm onFormSubmit={this.handleSubmit} />
+          <Link to="/search">
+            <Button className="btn-block" type="primary" block={true}>
+              Search
+            </Button>
+          </Link>
+          <Header numTodos={this.state.tasks.length} />
+          <TodoList tasks={this.state.tasks} onDelete={this.handleDelete}
+            onUpdate={this.handleUpdate} />
+          <SubmitForm onFormSubmit={this.handleSubmit} />
         </div>
       </div>
     );
-  } 
+  }
 }
 
 export default withRouter(Home);

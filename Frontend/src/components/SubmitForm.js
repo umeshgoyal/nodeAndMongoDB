@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
-import ReactDOM from 'react-dom';
-import App from '../App';
+import React from 'react';
+// import ReactDOM from 'react-dom';
+// import App from '../App';
 
 class SubmitForm extends React.Component {
     state = { name: '',
@@ -9,7 +9,7 @@ class SubmitForm extends React.Component {
   
     handleSubmit = (event) => {
       event.preventDefault();
-      if(this.state.name === '') return;
+      if(this.state.name === '' || this.state.startDate==='' || this.state.endDate==='') return;
       this.props.onFormSubmit(this.state);
       this.setState({ 
         name: '' ,

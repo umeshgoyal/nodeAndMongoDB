@@ -1,11 +1,10 @@
 import React, {Component} from 'react';
 import { Button } from 'antd';
-import ReactDOM from 'react-dom';
 import axios from 'axios';
 
-import {Link, BrowserRouter, Route, Switch, withRouter } from 'react-router-dom';
+import {Link, withRouter } from 'react-router-dom';
 import TodoList from './TodoList';
-import App from '../App';
+// import App from '../App';
 
 class SearchForm extends Component{
     state = {
@@ -41,7 +40,6 @@ class SearchForm extends Component{
       }
       handleDelete = (index) => {
         const newArr = [...this.state.tasks];
-        // console.log(newArr[index],index);
         let pos = -1;
         for( let i =0 ; i< newArr.length;i++ ){
           if( newArr[i].id === index){
@@ -49,7 +47,7 @@ class SearchForm extends Component{
             break;
           }
         }
-        if( pos == -1) return;
+        if( pos === -1) return;
         let task = newArr[pos];
         console.log(task);
         axios.delete(`http://localhost:3001/todos`,  { data: task })
@@ -69,7 +67,7 @@ class SearchForm extends Component{
             break;
           }
         }
-        if( pos == -1) return;
+        if( pos === -1) return;
         newArr[pos].name = task.name;
         newArr[pos].startDate = task.startDate;
         newArr[pos].endDate= task.endDate;
@@ -108,8 +106,6 @@ class SearchForm extends Component{
       }
 
       render() {
-  
-        const {name} = this.state;
         const {startDate} = this.state;
         const { endDate} = this.state;
         return(
