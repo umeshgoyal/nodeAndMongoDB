@@ -66,7 +66,7 @@ router.get("/todos/endDate", (req,res) => {
 
 
 /* Get all Todos : Between startDate and endDate
-curl -X "GET" -d 'name=Task-4 &startDate=2020-11-04&endDate=2020-11-21' http://localhost:3001/todos/search
+curl -X "GET"  http://localhost:3001/todos/search?startDate=2020-11-04&endDate=2020-12-30
 */
 
 router.get("/todos/search",(req,res)=>{
