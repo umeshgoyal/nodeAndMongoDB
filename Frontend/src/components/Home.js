@@ -1,15 +1,11 @@
 import React from 'react';
-// import ReactDOM from 'react-dom';
 import { Button } from 'antd';
 
 import { Link, withRouter } from 'react-router-dom';
 import "react-datepicker/dist/react-datepicker.css";
 import axios from 'axios';
 import SubmitForm from './SubmitForm';
-// import SearchForm from './SearchForm';
 import TodoList from './TodoList';
-// import Todo from './Todo';
-// import TodoApp from './Todo';
 import Header from './Header';
 class Home extends React.Component {
   state = {

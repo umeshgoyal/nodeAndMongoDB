@@ -4,7 +4,6 @@ import axios from 'axios';
 
 import {Link, withRouter } from 'react-router-dom';
 import TodoList from './TodoList';
-// import App from '../App';
 
 class SearchForm extends Component{
     state = {

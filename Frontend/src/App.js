@@ -5,12 +5,8 @@ import "react-datepicker/dist/react-datepicker.css";
 import './App.css';
 import axios from 'axios';
 
-// import SubmitForm from './components/SubmitForm';
 import SearchForm from './components/SearchForm';
-// import TodoList from './components/TodoList';
 import Home from './components/Home';
-// import Todo from './components/Todo';
-// import Header from './components/Header';
 class App extends React.Component {
   state = {
     tasks: []
@@ -46,7 +42,7 @@ class App extends React.Component {
         break;
       }
     }
-    
+
     if( pos === -1) return;
     newArr[pos].name = task.name;
     newArr[pos].startDate = task.startDate;
