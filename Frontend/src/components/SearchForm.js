@@ -19,7 +19,13 @@ class SearchForm extends Component{
         
         let todoData = [];
         let task = this.state;
-        axios.post(`http://localhost:3001/todos/search`,task)
+        axios.get(`http://localhost:3001/todos/search`,
+        {
+          params:{
+            startDate:task.startDate,
+            endDate:task.endDate
+          }
+        })
         .then(res => {
           for( let i =0 ;i< res.data.length;i++) {
             todoData.push(res.data[i]);

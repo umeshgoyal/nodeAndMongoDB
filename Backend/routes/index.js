@@ -69,12 +69,11 @@ router.get("/todos/endDate", (req,res) => {
 curl -X "GET" -d 'name=Task-4 &startDate=2020-11-04&endDate=2020-11-21' http://localhost:3001/todos/search
 */
 
-router.post("/todos/search",(req,res)=>{
-    console.log(req.body,req.body.startDate);
-
-    var nextday= new Date(req.body.endDate);
+router.get("/todos/search",(req,res)=>{
+    
+    var nextday= new Date(req.query.endDate);
     nextday.setTime(nextday.getTime());
-    var prevday=  new Date(req.body.startDate);
+    var prevday=  new Date(req.query.startDate);
     prevday.setTime(prevday.getTime() );
     Todos.find({
         startDate:{
@@ -88,7 +87,6 @@ router.post("/todos/search",(req,res)=>{
         else{
             console.log(allTodos);
             res.json(allTodos);
-           // res.send(allTodos);
         }
     });
 });
