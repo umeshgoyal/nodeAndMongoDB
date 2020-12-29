@@ -99,10 +99,10 @@ curl -X POST -d 'name=Task-4 &startDate=2020-11-11&endDate=2020-11-21' http://lo
 */
 router.post("/todos", (req,res) => {
    // console.log(req);
-   	var d = new Date();
-	var n = d.valueOf();
+   	var epochTime = new Date();
+	var uniqueId = epochTime.valueOf();
     let newTodo = {
-    	id:n,
+    	id:uniqueId,
         name: req.body.name,
         startDate:req.body.startDate,
         endDate:req.body.endDate,
@@ -154,8 +154,6 @@ router.put("/todos", (req,res) => {
             doc.name =  req.body.data.name;
             doc.startDate = req.body.data.startDate;
             doc.endDate = req.body.data.endDate;
-            // doc.dateCreated = req.body.dateCreated;
-            // doc.pending = req.body.pending;
             doc.save();
             res.send('Updated');
         }
