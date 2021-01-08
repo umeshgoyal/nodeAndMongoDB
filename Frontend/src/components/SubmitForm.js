@@ -14,6 +14,7 @@ class SubmitForm extends React.Component {
         startDate: '',
         endDate: ''});
     }
+    
     handleInputChange = (event) => {
       event.preventDefault()
       this.setState({

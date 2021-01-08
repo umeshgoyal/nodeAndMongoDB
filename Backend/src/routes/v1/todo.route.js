@@ -1,13 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const Todos = require('../models/todo');
+const Todos = require('../../models/todo');
 const mongoose = require('mongoose');
 
 
 /* Get all TODOS:   
 curl http://localhost:3001/todos
 */
-router.get("/todos", (req,res) => {
+router.get("/", (req,res) => {
     Todos.find({}, (err,allTodos) => {
         if(err){
             console.log(err);
