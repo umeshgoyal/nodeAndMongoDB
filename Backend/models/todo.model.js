@@ -1,10 +1,25 @@
 const mongoose = require("mongoose");
-const todoSchema = new mongoose.Schema({
-  id: Number,
-  name: String,
-  startDate: { type: Date },
-  endDate: { type: Date },
-  dateCreated: { type: Date },
-  pending: Boolean,
-});
-module.exports = mongoose.model("Todos", todoSchema);
+
+// FIXME - Add React ME like comments
+const todoSchema = new mongoose.Schema(
+  {
+    id: Number,
+    name: {
+      type: String,
+      required: true,
+    },
+    startDate: {
+      type: Date,
+      required: true,
+    },
+    endDate: {
+      type: Date,
+      required: true,
+    },
+    pending: {
+      type: Boolean,
+    },
+  }
+);
+
+module.exports = mongoose.model("todos", todoSchema);
