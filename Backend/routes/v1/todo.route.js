@@ -7,13 +7,12 @@ const mongoose = require("mongoose");
 curl http://localhost:3001/todos
 */
 router.get("/", (req, res) => {
-  Todos.find({}, (err, allTodos) => {
+  Todos.create(newTodo, (err, newlyCreated) => {
     if (err) {
-      console.log(err);
+      //   console.log(err);
+      res.status(500).send();
     } else {
-      console.log(allTodos);
-      res.json(allTodos);
-      // res.send(allTodos);
+      res.status(201).send(newlyCreated);
     }
   });
 });
@@ -37,9 +36,9 @@ curl http://localhost:3001/todos/pending
 curl http://localhost:3001/todos/endDate
 */
 // router.get("/endDate", (req, res) => {
-//   var lastday = new Date();
+//   let lastday = new Date();
 //   lastday.setTime(lastday.getTime() - 15 * 24 * 60 * 60 * 1000);
-//   var today = new Date();
+//   let today = new Date();
 //   today.setTime(today.getTime());
 //   Todos.find(
 //     {
@@ -67,9 +66,9 @@ curl -X "GET"  http://localhost:3001/todos/search?startDate=2020-11-04&endDate=2
 router.post("/search", (req, res) => {
   console.log(req.body, req.body.startDate);
 
-  var nextday = new Date(req.body.endDate);
+  let nextday = new Date(req.body.endDate);
   nextday.setTime(nextday.getTime());
-  var prevday = new Date(req.query.startDate);
+  let prevday = new Date(req.query.startDate);
   prevday.setTime(prevday.getTime());
   Todos.find(
     {
@@ -94,9 +93,16 @@ curl -X POST -d 'name=Task-4 &startDate=2020-11-11&endDate=2020-11-21' http://lo
 
 */
 router.post("/", (req, res) => {
-  // console.log(req);
-  var epochTime = new Date();
-  var uniqueId = epochTime.valueOf();
+  console.log(req);
+
+  // Only accept json request body
+  if (!req.is("application/json")) {
+    res.status(415).send({ error: "Received non-JSON data" });
+  }
+
+  let epochTime = new Date();
+  let uniqueId = epochTime.valueOf();
+
   let newTodo = {
     id: uniqueId,
     name: req.body.name,
@@ -105,28 +111,13 @@ router.post("/", (req, res) => {
     dateCreated: new Date(),
     pending: true,
   };
+
   Todos.create(newTodo, (err, newlyCreated) => {
     if (err) {
         console.log(err);
+      res.status(500).send();
     } else {
-      res.end(newlyCreated);
-    }
-  });
-});
-
-/* Delete a TODO to the list
-curl -X "DELETE" -d 'name= ' http://localhost:3001/todos
-*/
-router.delete("/", (req, res) => {
-  console.log(req.body);
-  let deleteTodo = req.body._id;
-  console.log("deleteTodo", deleteTodo);
-  Todos.deleteOne({ _id: deleteTodo }, (err, result) => {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log("Backend", result);
-      res.json(result);
+      res.status(201).send(newlyCreated);
     }
   });
 });
@@ -138,16 +129,44 @@ curl -X PUT -d 'name=Task-1 &startDate=2020-11-03&endDate=2020-11-20&dateCreated
 router.put("/", (req, res) => {
   console.log(req.body.data);
 
-  var condition = { id: req.body.data.id };
-  Todos.findOne(condition, function (err, doc) {
+  // Only accept json request body
+  if (!req.is("application/json")) {
+    res.status(415).send({ error: "Received non-JSON data" });
+  }
+
+  let condition = { id: req.body.data.id };
+
+    Todos.findOne(condition, function (err, doc) {
+      if (err) {
+        console.log(err);
+        res.status(500).send();
+      } else if (doc == null) {
+        res.status(400).send({ error: "Resource not found" });
+      } else {
+        doc.name = req.body.name;
+        doc.startDate = req.body.startDate;
+        doc.endDate = req.body.endDate;
+        doc.save();
+
+        res.status(204).send();
+      }
+    });
+});
+
+/* Delete a TODO to the list
+curl -X "DELETE" -d 'name= ' http://localhost:3001/todos
+*/
+router.delete("/", (req, res) => {
+  console.log(req.body);
+  let deleteTodo = req.body.id;
+
+  Todos.deleteOne({ id: deleteTodo }, (err, result) => {
     if (err) {
       console.log(err);
+      res.status(500).send();
     } else {
-      doc.name = req.body.data.name;
-      doc.startDate = req.body.data.startDate;
-      doc.endDate = req.body.data.endDate;
-      doc.save();
-      res.send("Updated");
+      console.log(result);
+      res.status(200).send({ deletedCount: result.deletedCount });
     }
   });
 });
