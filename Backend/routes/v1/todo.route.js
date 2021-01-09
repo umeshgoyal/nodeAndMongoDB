@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const Todos = require("../../models/todo");
+const Todos = require("../../models/todo.model");
 const mongoose = require("mongoose");
 
 /* Get all TODOS:   
