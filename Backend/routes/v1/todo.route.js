@@ -4,21 +4,22 @@ const Todos = require("../../models/todo.model");
 const mongoose = require("mongoose");
 
 /* Get all TODOS:   
-curl http://localhost:3001/todos
+curl http://localhost:8082/v1/todos
 */
 router.get("/", (req, res) => {
-  Todos.create(newTodo, (err, newlyCreated) => {
+  Todos.find({}, (err, allTodos) => {
     if (err) {
-      //   console.log(err);
+      console.log(err);
       res.status(500).send();
     } else {
-      res.status(201).send(newlyCreated);
+      console.log(allTodos);
+      res.send(allTodos);
     }
   });
 });
 
 /* Get all TODOS: Which are pending   
-curl http://localhost:3001/todos/pending
+curl http://localhost:8082/todos/pending
 */
 // router.get("/pending", (req, res) => {
 //   Todos.find({ pending: true }, (err, allTodos) => {
@@ -33,7 +34,7 @@ curl http://localhost:3001/todos/pending
 // });
 
 /* Get all TODOS: :Last x days( EG: 15days )  
-curl http://localhost:3001/todos/endDate
+curl http://localhost:8082/todos/endDate
 */
 // router.get("/endDate", (req, res) => {
 //   let lastday = new Date();
@@ -60,7 +61,7 @@ curl http://localhost:3001/todos/endDate
 // });
 
 /* Get all Todos : Between startDate and endDate
-curl -X "GET"  http://localhost:3001/todos/search?startDate=2020-11-04&endDate=2020-12-30
+curl -X "GET"  http://localhost:8082/todos/search?startDate=2020-11-04&endDate=2020-12-30
 */
 
 router.post("/search", (req, res) => {
@@ -89,52 +90,57 @@ router.post("/search", (req, res) => {
 });
 
 /* Add a TODO to the list
-curl -X POST -d 'name=Task-4 &startDate=2020-11-11&endDate=2020-11-21' http://localhost:3001/todos
+curl -X POST http://localhost:8082/v1/todos \
+    -d '{"name": "Learn Nodejs by doing","startDate": "2021-01-07","endDate": "2021-01-09"}' \
+    -H 'Content-Type: application/json'
 
+Nb: You'll need to change the "id" value to that of one of your todo items
 */
 router.post("/", (req, res) => {
-  console.log(req);
+  console.log(req.body);
 
   // Only accept json request body
   if (!req.is("application/json")) {
     res.status(415).send({ error: "Received non-JSON data" });
-  }
+  } else {
+    let epochTime = new Date();
+    let uniqueId = epochTime.valueOf();
 
-  let epochTime = new Date();
-  let uniqueId = epochTime.valueOf();
+    let newTodo = {
+      id: uniqueId,
+      name: req.body.name,
+      startDate: req.body.startDate,
+      endDate: req.body.endDate,
+      dateCreated: new Date(),
+      pending: true,
+    };
 
-  let newTodo = {
-    id: uniqueId,
-    name: req.body.name,
-    startDate: req.body.startDate,
-    endDate: req.body.endDate,
-    dateCreated: new Date(),
-    pending: true,
-  };
-
-  Todos.create(newTodo, (err, newlyCreated) => {
-    if (err) {
+    Todos.create(newTodo, (err, newlyCreated) => {
+      if (err) {
         console.log(err);
-      res.status(500).send();
-    } else {
-      res.status(201).send(newlyCreated);
-    }
-  });
+        res.status(500).send();
+      } else {
+        res.status(201).send(newlyCreated);
+      }
+    });
+  }
 });
 
 /* Update an existing TODO
-curl -X PUT -d 'name=Task-1 &startDate=2020-11-03&endDate=2020-11-20&dateCreated=2020-11-01&pending=false' http://localhost:3000/todos
+curl -X PUT http://localhost:8082/v1/todos \
+    -d '{"id": <id-value>, "name": "Play tennis","startDate": "2021-01-07","endDate": "2021-01-09"}' \
+    -H 'Content-Type: application/json'
 
+Nb: You'll need to change the "id" value to that of one of your todo items
 */
 router.put("/", (req, res) => {
-  console.log(req.body.data);
+  console.log(req.body);
 
   // Only accept json request body
   if (!req.is("application/json")) {
     res.status(415).send({ error: "Received non-JSON data" });
-  }
-
-  let condition = { id: req.body.data.id };
+  } else {
+    let condition = { id: req.body.id };
 
     Todos.findOne(condition, function (err, doc) {
       if (err) {
@@ -151,14 +157,16 @@ router.put("/", (req, res) => {
         res.status(204).send();
       }
     });
+  }
 });
 
-/* Delete a TODO to the list
-curl -X "DELETE" -d 'name= ' http://localhost:3001/todos
+/* Delete a TODO from the list
+curl -X "DELETE" http://localhost:8082/v1/todos/<id-value>
+
+Nb: You'll need to change "<id-value>" to the "id" value of one of your todo items
 */
-router.delete("/", (req, res) => {
-  console.log(req.body);
-  let deleteTodo = req.body.id;
+router.delete("/:id", (req, res) => {
+  let deleteTodo = req.params.id;
 
   Todos.deleteOne({ id: deleteTodo }, (err, result) => {
     if (err) {
