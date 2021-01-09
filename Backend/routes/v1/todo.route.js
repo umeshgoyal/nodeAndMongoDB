@@ -21,44 +21,44 @@ router.get("/", (req, res) => {
 /* Get all TODOS: Which are pending   
 curl http://localhost:3001/todos/pending
 */
-router.get("/pending", (req, res) => {
-  Todos.find({ pending: true }, (err, allTodos) => {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log(allTodos);
-      res.json(allTodos);
-      // res.send(allTodos);
-    }
-  });
-});
+// router.get("/pending", (req, res) => {
+//   Todos.find({ pending: true }, (err, allTodos) => {
+//     if (err) {
+//       console.log(err);
+//     } else {
+//       console.log(allTodos);
+//       res.json(allTodos);
+//       // res.send(allTodos);
+//     }
+//   });
+// });
 
 /* Get all TODOS: :Last x days( EG: 15days )  
 curl http://localhost:3001/todos/endDate
 */
-router.get("/endDate", (req, res) => {
-  var lastday = new Date();
-  lastday.setTime(lastday.getTime() - 15 * 24 * 60 * 60 * 1000);
-  var today = new Date();
-  today.setTime(today.getTime());
-  Todos.find(
-    {
-      startDate: {
-        $lte: today,
-        $gte: lastday,
-      },
-    },
-    (err, allTodos) => {
-      if (err) {
-        console.log(err);
-      } else {
-        console.log(allTodos);
-        res.json(allTodos);
-        // res.send(allTodos);
-      }
-    }
-  );
-});
+// router.get("/endDate", (req, res) => {
+//   var lastday = new Date();
+//   lastday.setTime(lastday.getTime() - 15 * 24 * 60 * 60 * 1000);
+//   var today = new Date();
+//   today.setTime(today.getTime());
+//   Todos.find(
+//     {
+//       startDate: {
+//         $lte: today,
+//         $gte: lastday,
+//       },
+//     },
+//     (err, allTodos) => {
+//       if (err) {
+//         console.log(err);
+//       } else {
+//         console.log(allTodos);
+//         res.json(allTodos);
+//         // res.send(allTodos);
+//       }
+//     }
+//   );
+// });
 
 /* Get all Todos : Between startDate and endDate
 curl -X "GET"  http://localhost:3001/todos/search?startDate=2020-11-04&endDate=2020-12-30
@@ -151,4 +151,5 @@ router.put("/", (req, res) => {
     }
   });
 });
+
 module.exports = router;
