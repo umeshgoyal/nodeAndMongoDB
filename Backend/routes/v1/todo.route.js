@@ -1,12 +1,12 @@
 const express = require("express");
 const router = express.Router();
-const Todos = require("../models/todo");
+const Todos = require("../../models/todo");
 const mongoose = require("mongoose");
 
 /* Get all TODOS:   
 curl http://localhost:3001/todos
 */
-router.get("/todos", (req, res) => {
+router.get("/", (req, res) => {
   Todos.find({}, (err, allTodos) => {
     if (err) {
       console.log(err);
@@ -21,7 +21,7 @@ router.get("/todos", (req, res) => {
 /* Get all TODOS: Which are pending   
 curl http://localhost:3001/todos/pending
 */
-router.get("/todos/pending", (req, res) => {
+router.get("/pending", (req, res) => {
   Todos.find({ pending: true }, (err, allTodos) => {
     if (err) {
       console.log(err);
@@ -36,7 +36,7 @@ router.get("/todos/pending", (req, res) => {
 /* Get all TODOS: :Last x days( EG: 15days )  
 curl http://localhost:3001/todos/endDate
 */
-router.get("/todos/endDate", (req, res) => {
+router.get("/endDate", (req, res) => {
   var lastday = new Date();
   lastday.setTime(lastday.getTime() - 15 * 24 * 60 * 60 * 1000);
   var today = new Date();
@@ -64,8 +64,10 @@ router.get("/todos/endDate", (req, res) => {
 curl -X "GET"  http://localhost:3001/todos/search?startDate=2020-11-04&endDate=2020-12-30
 */
 
-router.get("/todos/search", (req, res) => {
-  var nextday = new Date(req.query.endDate);
+router.post("/search", (req, res) => {
+  console.log(req.body, req.body.startDate);
+
+  var nextday = new Date(req.body.endDate);
   nextday.setTime(nextday.getTime());
   var prevday = new Date(req.query.startDate);
   prevday.setTime(prevday.getTime());
@@ -91,7 +93,7 @@ router.get("/todos/search", (req, res) => {
 curl -X POST -d 'name=Task-4 &startDate=2020-11-11&endDate=2020-11-21' http://localhost:3001/todos
 
 */
-router.post("/todos", (req, res) => {
+router.post("/", (req, res) => {
   // console.log(req);
   var epochTime = new Date();
   var uniqueId = epochTime.valueOf();
@@ -115,7 +117,7 @@ router.post("/todos", (req, res) => {
 /* Delete a TODO to the list
 curl -X "DELETE" -d 'name= ' http://localhost:3001/todos
 */
-router.delete("/todos", (req, res) => {
+router.delete("/", (req, res) => {
   console.log(req.body);
   let deleteTodo = req.body._id;
   console.log("deleteTodo", deleteTodo);
@@ -133,7 +135,7 @@ router.delete("/todos", (req, res) => {
 curl -X PUT -d 'name=Task-1 &startDate=2020-11-03&endDate=2020-11-20&dateCreated=2020-11-01&pending=false' http://localhost:3000/todos
 
 */
-router.put("/todos", (req, res) => {
+router.put("/", (req, res) => {
   console.log(req.body.data);
 
   var condition = { id: req.body.data.id };

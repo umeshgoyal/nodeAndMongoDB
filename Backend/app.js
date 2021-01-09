@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 // const methodOverride = require("method-override");
-const routes = require("./routes");
+const routes = require("./routes/v1");
 const mongoose = require("mongoose");
 const captureDate = require("./middleware/middleware");
 const cors = require("cors");
@@ -29,4 +29,4 @@ app.use(
 // FIXME - See if used 
 app.use(captureDate);
 
-app.use("/", routes);
+app.use("/v1", routes);
