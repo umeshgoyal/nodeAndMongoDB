@@ -20,13 +20,13 @@ class SearchForm extends Component {
     let todoData = [];
     let task = this.state;
     axios
-      .get(`${config.endpoint}/todos/search`, {
+      .get(`${config.endpoint}/todos`, {
         params: {
-          startDate: task.startDate,
-          endDate: task.endDate
-        }
+          startDateMin: task.startDate,
+          startDateMax: task.endDate,
+        },
       })
-      .then(res => {
+      .then((res) => {
         for (let i = 0; i < res.data.length; i++) {
           todoData.push(res.data[i]);
         }

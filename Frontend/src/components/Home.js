@@ -49,7 +49,7 @@ class Home extends React.Component {
     if (pos === -1) return;
     let task = newArr[pos];
     console.log(task);
-    axios.delete(`${config.endpoint}/todos`, { data: task }).then(res => {
+    axios.delete(`${config.endpoint}/todos/${task.id}`).then(res => {
       console.log("In Frontend", res.data);
     });
     newArr.splice(pos, 1);
