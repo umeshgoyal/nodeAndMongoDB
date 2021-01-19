@@ -1,21 +1,16 @@
 import React from "react";
-import { Button } from "antd";
 
 import { Link, withRouter } from "react-router-dom";
-import "react-datepicker/dist/react-datepicker.css";
+// import "react-datepicker/dist/react-datepicker.css";
 import axios from "axios";
 import SubmitForm from "./SubmitForm";
 import TodoList from "./TodoList";
-import Header from "./Header";
-import SearchForm from "./SearchForm";
 import { Modal } from "antd";
 import "antd/dist/antd.css";
 import {
   EditOutlined,
-  DeleteOutlined,
-  PlusCircleOutlined,
-  SearchOutlined
-} from "@ant-design/icons";
+  PlusCircleOutlined} from "@ant-design/icons";
+import { config } from "../index";
 
 class Home extends React.Component {
   state = {
@@ -36,7 +31,7 @@ class Home extends React.Component {
   };
 
   handleSubmit = task => {
-    axios.post(`http://localhost:3001/todos`, task).then(res => {
+    axios.post(`${config.endpoint}/todos`, task).then(res => {
       console.log("Recieved data ", res.data);
       this.setState({ tasks: [...this.state.tasks, res.data] });
     });
@@ -54,7 +49,7 @@ class Home extends React.Component {
     if (pos === -1) return;
     let task = newArr[pos];
     console.log(task);
-    axios.delete(`http://localhost:3001/todos`, { data: task }).then(res => {
+    axios.delete(`${config.endpoint}/todos`, { data: task }).then(res => {
       console.log("In Frontend", res.data);
     });
     newArr.splice(pos, 1);
@@ -79,7 +74,7 @@ class Home extends React.Component {
     let updateTask = newArr[pos];
     console.log(updateTask);
 
-    axios.put(`http://localhost:3001/todos`, { data: updateTask }).then(res => {
+    axios.put(`${config.endpoint}/todos`, { data: updateTask }).then(res => {
       console.log("Updating In Frontend", res.data);
     });
     this.setState({ tasks: newArr });
@@ -88,7 +83,7 @@ class Home extends React.Component {
   performAPICall = () => {
     let todoData = [];
     axios
-      .get(`http://localhost:3001/todos`)
+      .get(`${config.endpoint}/todos`)
       .then(res => {
         for (let i = 0; i < res.data.length; i++) {
           todoData.push(res.data[i]);
