@@ -144,7 +144,7 @@ router.post("/", (req, res) => {
 
   Todos.create(newTodo, (err, newlyCreated) => {
     if (err) {
-      //   console.log(err);
+        console.log(err);
       res.status(500).send();
     } else {
       res.status(201).send(newlyCreated);
@@ -180,7 +180,7 @@ router.put("/", (req, res) => {
       doc.endDate = req.body.endDate;
       doc.save();
 
-      res.status(204).send();
+      res.status(200).send(doc);
     }
   });
 });
@@ -199,7 +199,7 @@ router.delete("/:id", (req, res) => {
       res.status(500).send();
     } else {
       console.log(result);
-      res.status(200).send({ deletedCount: result.deletedCount });
+      res.status(200).send({ deleted: result.deletedCount == 1 ? true : false });
     }
   });
 });
