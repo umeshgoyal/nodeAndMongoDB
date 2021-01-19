@@ -1,7 +1,8 @@
 body {
-  padding: 50px;
+  /* padding: 50px; */
   background-color: #edf2f5;
-  font-family: sans-serif;
+  font-family: "Montserrat" !important;
+  margin: 0px;
 }
 #root {
   display: flex;
