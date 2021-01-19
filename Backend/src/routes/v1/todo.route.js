@@ -3,16 +3,20 @@ const router = express.Router();
 const Todos = require("../../models/todo.model");
 const mongoose = require("mongoose");
 
-/* Get all TODOS:   
-curl http://localhost:8082/v1/todos
+/** 
+ * Get all TODOS:
+ * curl http://localhost:8082/v1/todos
+ * 
+ * Get todos with their "startDate" b/w startDateMin and startDateMax
+ * curl http://localhost:8082/v1/todos?startDateMin=2020-11-04&startDateMax=2020-12-30
 */
 router.get("/", (req, res) => {
-  //   let nextday = new Date(req.query.startDateMax);
-  //   nextday.setTime(nextday.getTime());
+  if (req.query.startDateMax && req.query.startDateMin) {
+      let nextday = new Date(req.query.startDateMax);
+      nextday.setTime(nextday.getTime());
 
-  //   let prevday = new Date(req.query.startDateMin);
-  //   prevday.setTime(prevday.getTime());
-  if (req.params.startDate) {
+      let prevday = new Date(req.query.startDateMin);
+      prevday.setTime(prevday.getTime());
     Todos.find(
       {
         startDate: {
@@ -42,10 +46,9 @@ router.get("/", (req, res) => {
   }
 });
 
-// FIXME - Deside if to keep
-
-/* Get all TODOS: Which are pending   
-curl http://localhost:8082/v1/todos/pending
+/**
+ * Get todos with "pending" field as "true"
+ * curl http://localhost:8082/v1/todos/pending
 */
 router.get("/todos/pending", (req,res) => {
     Todos.find({pending:true}, (err,allTodos) => {
@@ -60,18 +63,19 @@ router.get("/todos/pending", (req,res) => {
     });
 });
 
-// FIXME - Descide if to keep
-// /* Get all TODOS: :Last x days( EG: 15days )
-// curl http://localhost:8082/v1/todos/endDate
-// */
+/**
+ * Get todos with "endDate" in the coming x days( EG: 15days )
+ * curl http://localhost:8082/v1/todos/endDate?numDays=15
+*/
 router.get("/todos/endDate", (req,res) => {
     var lastday= new Date();
-    lastday.setTime(lastday.getTime() - (15*24*60*60*1000));
+    const daysAhead = req.params.numDays;
+    lastday.setTime(lastday.getTime() - daysAhead * 24 * 60 * 60 * 1000);
     var today= new Date();
     today.setTime(today.getTime() );
     Todos.find({
-        startDate:{
-            $lte:today, $gte:lastday
+        endDate:{
+            $gte:today, $lte:lastday
         }
     },
      (err,allTodos) => {
@@ -84,34 +88,6 @@ router.get("/todos/endDate", (req,res) => {
            // res.send(allTodos);
         }
     });
-});
-
-/* Get all Todos : Between startDate and endDate
-curl -X "GET"  http://localhost:8082/v1/todos/search?startDateMin=2020-11-04&startDateMax=2020-12-30
-*/
-
-router.get("/search", (req, res) => {
-  var nextday = new Date(req.query.startDateMax);
-  nextday.setTime(nextday.getTime());
-  var prevday = new Date(req.query.startDateMin);
-  prevday.setTime(prevday.getTime());
-
-  Todos.find(
-    {
-      startDate: {
-        $lte: nextday,
-        $gte: prevday,
-      },
-    },
-    (err, allTodos) => {
-      if (err) {
-        console.log(err);
-      } else {
-        console.log(allTodos);
-        res.send(allTodos);
-      }
-    }
-  );
 });
 
 /* Add a TODO to the list
