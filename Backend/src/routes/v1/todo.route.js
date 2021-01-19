@@ -3,20 +3,20 @@ const router = express.Router();
 const Todos = require("../../models/todo.model");
 const mongoose = require("mongoose");
 
-/** 
+/**
  * Get all TODOS:
  * curl http://localhost:8082/v1/todos
- * 
+ *
  * Get todos with their "startDate" b/w startDateMin and startDateMax
  * curl http://localhost:8082/v1/todos?startDateMin=2020-11-04&startDateMax=2020-12-30
-*/
+ */
 router.get("/", (req, res) => {
   if (req.query.startDateMax && req.query.startDateMin) {
-      let nextday = new Date(req.query.startDateMax);
-      nextday.setTime(nextday.getTime());
+    let nextday = new Date(req.query.startDateMax);
+    nextday.setTime(nextday.getTime());
 
-      let prevday = new Date(req.query.startDateMin);
-      prevday.setTime(prevday.getTime());
+    let prevday = new Date(req.query.startDateMin);
+    prevday.setTime(prevday.getTime());
     Todos.find(
       {
         startDate: {
@@ -49,45 +49,46 @@ router.get("/", (req, res) => {
 /**
  * Get todos with "pending" field as "true"
  * curl http://localhost:8082/v1/todos/pending
-*/
-router.get("/todos/pending", (req,res) => {
-    Todos.find({pending:true}, (err,allTodos) => {
-        if(err){
-            console.log(err);
-        }
-        else{
-            console.log(allTodos);
-            res.send(allTodos);
-           // res.send(allTodos);
-        }
-    });
+ */
+router.get("/todos/pending", (req, res) => {
+  Todos.find({ pending: true }, (err, allTodos) => {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log(allTodos);
+      res.send(allTodos);
+      // res.send(allTodos);
+    }
+  });
 });
 
 /**
  * Get todos with "endDate" in the coming x days( EG: 15days )
  * curl http://localhost:8082/v1/todos/endDate?numDays=15
-*/
-router.get("/todos/endDate", (req,res) => {
-    var lastday= new Date();
-    const daysAhead = req.params.numDays;
-    lastday.setTime(lastday.getTime() - daysAhead * 24 * 60 * 60 * 1000);
-    var today= new Date();
-    today.setTime(today.getTime() );
-    Todos.find({
-        endDate:{
-            $gte:today, $lte:lastday
-        }
+ */
+router.get("/todos/endDate", (req, res) => {
+  var lastday = new Date();
+  const daysAhead = req.params.numDays;
+  lastday.setTime(lastday.getTime() - daysAhead * 24 * 60 * 60 * 1000);
+  var today = new Date();
+  today.setTime(today.getTime());
+  Todos.find(
+    {
+      endDate: {
+        $gte: today,
+        $lte: lastday,
+      },
     },
-     (err,allTodos) => {
-        if(err){
-            console.log(err);
-        }
-        else{
-            console.log(allTodos);
-            res.send(allTodos);
-           // res.send(allTodos);
-        }
-    });
+    (err, allTodos) => {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log(allTodos);
+        res.send(allTodos);
+        // res.send(allTodos);
+      }
+    }
+  );
 });
 
 /* Add a TODO to the list
@@ -120,7 +121,7 @@ router.post("/", (req, res) => {
 
   Todos.create(newTodo, (err, newlyCreated) => {
     if (err) {
-        console.log(err);
+      console.log(err);
       res.status(500).send();
     } else {
       res.status(201).send(newlyCreated);
@@ -175,7 +176,9 @@ router.delete("/:id", (req, res) => {
       res.status(500).send();
     } else {
       console.log(result);
-      res.status(200).send({ deleted: result.deletedCount == 1 ? true : false });
+      res
+        .status(200)
+        .send({ deleted: result.deletedCount == 1 ? true : false });
     }
   });
 });
