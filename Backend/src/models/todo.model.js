@@ -1,9 +1,8 @@
 const mongoose = require("mongoose");
 
-// FIXME - Add React ME like comments
+// TODO - Complete the TODO schema
 const todoSchema = new mongoose.Schema(
   {
-    id: Number,
     name: {
       type: String,
       required: true,
@@ -19,7 +18,10 @@ const todoSchema = new mongoose.Schema(
     pending: {
       type: Boolean,
     },
+  },
+  {
+    timestamps: true
   }
 );
 
-module.exports = mongoose.model("Todos", todoSchema);
+module.exports = mongoose.model("Todo", todoSchema);

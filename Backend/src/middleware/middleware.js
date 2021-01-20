@@ -1,9 +1,8 @@
-const captureDate = (req, res, next) => {
-  res.locals.dateCreated = new Date();
+const captureDateMiddleware = (req, res, next) => {
   console.log(
     `URL:  ${req.url}, Method:  ${req.method}, Timestamp: ${new Date()}`
   );
   next();
 };
 
-module.exports = captureDate;
+module.exports = captureDateMiddleware;
