@@ -41,7 +41,7 @@ class Home extends React.Component {
     const newArr = [...this.state.tasks];
     let pos = -1;
     for (let i = 0; i < newArr.length; i++) {
-      if (newArr[i].id === index) {
+      if (newArr[i]._id === index) {
         pos = i;
         break;
       }
@@ -49,19 +49,19 @@ class Home extends React.Component {
     if (pos === -1) return;
     let task = newArr[pos];
     console.log(task);
-    axios.delete(`${config.endpoint}/todos/${task.id}`).then(res => {
+    axios.delete(`${config.endpoint}/todos/${task._id}`).then(res => {
       console.log("In Frontend", res.data);
     });
     newArr.splice(pos, 1);
     this.setState({ tasks: newArr });
   };
 
-  handleUpdate = task => {
+  handleUpdate = async task => {
     const newArr = [...this.state.tasks];
 
     let pos = -1;
     for (let i = 0; i < newArr.length; i++) {
-      if (newArr[i].id === task.id) {
+      if (newArr[i]._id === task._id) {
         pos = i;
         break;
       }
@@ -74,15 +74,15 @@ class Home extends React.Component {
     let updateTask = newArr[pos];
     console.log(updateTask);
 
-    axios.put(`${config.endpoint}/todos`, { data: updateTask }).then(res => {
+    await axios.put(`${config.endpoint}/todos`, updateTask).then(res => {
       console.log("Updating In Frontend", res.data);
     });
     this.setState({ tasks: newArr });
   };
 
-  performAPICall = () => {
+  performAPICall = async () => {
     let todoData = [];
-    axios
+    await axios
       .get(`${config.endpoint}/todos`)
       .then(res => {
         for (let i = 0; i < res.data.length; i++) {
@@ -96,8 +96,8 @@ class Home extends React.Component {
       });
   };
 
-  componentDidMount() {
-    this.performAPICall();
+  async componentDidMount() {
+    await this.performAPICall();
   }
 
   render() {

@@ -7,8 +7,8 @@ class TodoList extends Component {
         <li>
           <Todo
             content={todo}
-            key={todo.id}
-            id={todo.id}
+            key={todo._id}
+            id={todo._id}
             onUpdate={this.props.onUpdate}
             onDelete={this.props.onDelete}
           />

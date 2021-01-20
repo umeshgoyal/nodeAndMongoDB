@@ -4,7 +4,7 @@ class Todo extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      id: "",
+      _id: "",
       name: "",
       endDate: "",
       startDate: "",
@@ -107,7 +107,7 @@ class Todo extends Component {
     var shortStartDate = this.props.content.startDate.split("T")[0];
     var shortEndDate = this.props.content.endDate.split("T")[0];
     this.setState({
-      id: this.props.content.id,
+      _id: this.props.content._id,
       name: this.props.content.name,
       startDate: shortStartDate,
       endDate: shortEndDate

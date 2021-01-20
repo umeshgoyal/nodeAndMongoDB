@@ -48,7 +48,7 @@ class SearchForm extends Component {
     const newArr = [...this.state.tasks];
     let pos = -1;
     for (let i = 0; i < newArr.length; i++) {
-      if (newArr[i].id === index) {
+      if (newArr[i]._id === index) {
         pos = i;
         break;
       }
@@ -67,7 +67,7 @@ class SearchForm extends Component {
 
     let pos = -1;
     for (let i = 0; i < newArr.length; i++) {
-      if (newArr[i].id === task.id) {
+      if (newArr[i]._id === task._id) {
         pos = i;
         break;
       }
