@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const captureDateMiddleware = require("../../middleware/middleware");
 
 // router.use(captureDateMiddleware);
 
