@@ -6,9 +6,12 @@ FROM gitpod/workspace-full
 #
 # More information: https://www.gitpod.io/docs/config-docker/
 RUN sudo apt-get install -y net-tools netcat tree gnupg
-RUN sudo curl -o /etc/init.d/mongodb https://raw.githubusercontent.com/mongodb/mongo/master/debian/init.d
-RUN wget -qO - https://www.mongodb.org/static/pgp/server-4.4.asc | sudo apt-key add -
-RUN echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/4.4 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-4.4.list
-RUN sudo apt-get update
-RUN sudo apt-get install -y mongodb-org
-RUN sudo apt --fix-broken install
+RUN mkdir -p /tmp/mongodb && \
+    cd /tmp/mongodb && \
+    wget -qOmongodb.tgz https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-ubuntu2004-4.4.3.tgz && \
+    tar xf mongodb.tgz && \
+    cd mongodb-* && \
+    sudo cp bin/* /usr/local/bin/ && \
+    rm -rf /tmp/mongodb && \
+    sudo mkdir -p /data/db && \
+    sudo chown gitpod:gitpod -R /data/db
