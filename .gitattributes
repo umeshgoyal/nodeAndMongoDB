@@ -1,5 +1,8 @@
 .gitattributes merge=copy-merge
 .gitignore merge=copy-merge
-package.json merge=copy-merge
-package-lock.json merge=copy-merge
-pnpm-lock.yaml merge=copy-merge
+Frontend/package.json merge=copy-merge
+Frontend/package-lock.json merge=copy-merge
+Frontend/pnpm-lock.yaml merge=copy-merge
+Backend/package.json merge=copy-merge
+Backend/package-lock.json merge=copy-merge
+Backend/pnpm-lock.yaml merge=copy-merge
