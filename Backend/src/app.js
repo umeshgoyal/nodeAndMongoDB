@@ -17,8 +17,14 @@ app.use(express.json());
 app.use("/v1", routes);
 
 // TODO - Create a MongoDB connection using Mongoose
-
-// Start the Node server
-app.listen(config.port, () => {
-  console.log(`App is running on port ${config.port}`);
+mongoose.connect(config.mongoose.url,config.mongoose.options).then(()=>{
+  console.log("Connected to MongoDB");
+  // Start the Node server
+  app.listen(config.port, () => {
+    console.log(`App is running on port ${config.port}`);
 });
+}).catch((e)=>{
+  console.log(e);
+});
+
+

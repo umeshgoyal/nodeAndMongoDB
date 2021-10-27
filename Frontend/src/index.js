@@ -4,10 +4,10 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {BrowserRouter} from "react-router-dom";
-import ipConfig from "./ipConfig.json";
+// import ipConfig from "./ipConfig.json";
 
 export const config = {
-  endpoint: `http://${ipConfig.workspaceIp}:8082/v1`,
+  endpoint: `http://localhost:8082/v1`,
 };
 
 ReactDOM.render(
